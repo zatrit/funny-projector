@@ -23,8 +23,8 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: CWMouseWheel.dll
-          path: ${{ github.workspace }}/bin/Release/netstandard2.1/CWMouseWheel.dll
+          name: FunnyProjector.dll
+          path: ${{ github.workspace }}/bin/Release/netstandard2.1/FunnyProjector.dll
 
   publish:
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
           namespace: zatrit # the thunderstore 'team' to publish under
           description: Allows to switch inventory slots using mouse wheel
           token: ${{ secrets.THUNDERSTORE_TOKEN }}
-          name: CWMouseWheel # the name of the package
+          name: FunnyProjector # the name of the package
           version: ${{ github.ref_name }} # Use the tag as the package version
           community: content-warning
           categories: | # <-- notice this pipe character
@@ -51,4 +51,4 @@ jobs:
             RugbugRedfern-MyceliumNetworking@1.0.2
           repo: https://thunderstore.io
           path: thunderstore
-          readme: https://raw.githubusercontent.com/zatrit/cwmousewheel/main/README.md
+          readme: https://raw.githubusercontent.com/zatrit/funny-projector/main/README.md
