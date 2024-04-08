@@ -17,6 +17,10 @@ public class LogImages {
         if (MyceliumNetwork.IsHost) {
             ApplyUrls(__instance, Urls.Urls, Config!.KeepVanilla);
         }
+
+        if (MyceliumNetwork.IsHost && SurfaceNetworkHandler.HasStarted) {
+            Urls!.SendResultUrls();
+        }
     }
 
     static Coroutine ApplyUrls(ProjectorMachine proj, IEnumerable<string> urls, bool keepVanilla)

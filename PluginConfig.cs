@@ -8,8 +8,10 @@ namespace FunnyProjector;
 
 public class PluginConfig(ConfigFile config, string configDir) {
     private readonly ConfigEntry<bool> _keepVanilla = config.Bind("Textures", "Keep vanilla", true);
+    private readonly ConfigEntry<bool> _acceptFromAll = config.Bind("Textures", "Accept from all", true);
 
     public bool KeepVanilla => _keepVanilla.Value;
+    public bool AcceptFromAll => _acceptFromAll.Value;
 
     public IEnumerable<string> Urls {
         get {

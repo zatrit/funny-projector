@@ -16,6 +16,8 @@ public class UrlsManager {
     public Action<IEnumerable<string>, bool>? OnResultUrls;
     public IEnumerable<string> Urls => _suggestedUrls.Values.Aggregate((a, b) => a.Concat(b));
 
+    static CSteamID CurrentUser => SteamUser.GetSteamID();
+
     public UrlsManager(UrlsRPC rpc, PluginConfig config) {
         (_rpc, _config) = (rpc, config);
 
@@ -23,11 +25,16 @@ public class UrlsManager {
         LobbyLeft += _suggestedUrls.Clear;
         LobbyEntered += () => {
             _suggestedUrls.Clear();
-            _rpc.SuggestUrls(_config.Urls, SteamUser.GetSteamID());
+            _rpc.SuggestUrls(_config.Urls, CurrentUser);
         };
 
         rpc.OnSuggestUrls += (steamID, urls) => {
-            if (!IsHost) throw new Exception("Not a host");
+            if (!IsHost) {
+                throw new Exception("Not a host");
+            }
+            if (!_config.AcceptFromAll && steamID != CurrentUser) {
+                return;
+            }
 
             _suggestedUrls.Add(steamID, urls);
             SendResultUrls();
