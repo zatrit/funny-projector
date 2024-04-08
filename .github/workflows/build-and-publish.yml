@@ -48,6 +48,7 @@ jobs:
             mods
           deps: |
             BepInEx-BepInExPack@5.4.2100
+            RugbugRedfern-MyceliumNetworking@1.0.2
           repo: https://thunderstore.io
           path: thunderstore
           readme: https://raw.githubusercontent.com/zatrit/cwmousewheel/main/README.md
