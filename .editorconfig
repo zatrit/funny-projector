@@ -1,0 +1,4 @@
+[*.cs]
+csharp_new_line_before_open_brace = false
+csharp_space_after_cast = true
+csharp_new_line_before_catch = false

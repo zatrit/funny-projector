@@ -1,0 +1,53 @@
+name: Build and publish Mod
+
+# Run when a new release is... released
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Build project using dotnet
+        run: dotnet build -P:Configuration=Release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: CWMouseWheel.dll
+          path: ${{ github.workspace }}/bin/Release/netstandard2.1/CWMouseWheel.dll
+
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: ${{ github.workspace }}/thunderstore
+
+      - uses: GreenTF/upload-thunderstore-package@v4.2
+        with:
+          namespace: zatrit # the thunderstore 'team' to publish under
+          description: Allows to switch inventory slots using mouse wheel
+          token: ${{ secrets.THUNDERSTORE_TOKEN }}
+          name: CWMouseWheel # the name of the package
+          version: ${{ github.ref_name }} # Use the tag as the package version
+          community: content-warning
+          categories: | # <-- notice this pipe character
+            mods
+          deps: |
+            BepInEx-BepInExPack@5.4.2100
+          repo: https://thunderstore.io
+          path: thunderstore
+          readme: https://raw.githubusercontent.com/zatrit/cwmousewheel/main/README.md
