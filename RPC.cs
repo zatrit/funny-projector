@@ -5,7 +5,7 @@ using System.Linq;
 
 using static MyceliumNetworking.MyceliumNetwork;
 using Steamworks;
-using UnityEngine;
+using System.Security;
 
 namespace FunnyProjector.RPCs;
 
@@ -25,8 +25,13 @@ public class UrlsRPC(uint modId) {
         => OnSuggestUrls?.Invoke(new(steamID), SplitUrls(data));
 
     [CustomRPC]
-    void AcceptResultUrls(string data, bool keepVanilla)
-        => OnResultUrls?.Invoke(SplitUrls(data), keepVanilla);
+    void AcceptResultUrls(string data, bool keepVanilla, RPCInfo info) {
+        if (info.SenderSteamID != LobbyHost) {
+            throw new Exception("Only host can send ResultUrls requests");
+        }
+
+        OnResultUrls?.Invoke(SplitUrls(data), keepVanilla);
+    }
 
     public void SuggestUrls(IEnumerable<string> urls, CSteamID steamID)
         => RPCTarget(

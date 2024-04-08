@@ -41,7 +41,7 @@ jobs:
       - uses: GreenTF/upload-thunderstore-package@v4.2
         with:
           namespace: zatrit # the thunderstore 'team' to publish under
-          description: Allows to switch inventory slots using mouse wheel
+          description: Show whatever you want on the greenscreen
           token: ${{ secrets.THUNDERSTORE_TOKEN }}
           name: FunnyProjector # the name of the package
           version: ${{ github.ref_name }} # Use the tag as the package version

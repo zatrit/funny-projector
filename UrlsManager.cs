@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FunnyProjector.RPCs;
+using Photon.Pun;
 using Steamworks;
 using UnityEngine.SceneManagement;
 using static MyceliumNetworking.MyceliumNetwork;
@@ -32,7 +33,9 @@ public class UrlsManager {
             if (!IsHost) {
                 throw new Exception("Not a host");
             }
-            if (!_config.AcceptFromAll && steamID != CurrentUser) {
+
+            var steamLobby = SurfaceNetworkHandler.Instance.m_SteamLobby;
+            if ((!_config.AcceptFromAll) && steamID != CurrentUser) {
                 return;
             }
 

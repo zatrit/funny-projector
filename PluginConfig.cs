@@ -14,7 +14,6 @@ public class PluginConfig(ConfigFile config, string configDir) {
 
     public bool KeepVanilla => _keepVanilla.Value;
     public bool AcceptFromAll => _acceptFromAll.Value;
-
     public IEnumerable<string> Urls {
         get {
             var path = Path.Join(configDir, $"{PLUGIN_NAME}.Backgrounds.txt");

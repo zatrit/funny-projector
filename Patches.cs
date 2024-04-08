@@ -33,6 +33,12 @@ public class LogImages {
         var textures = new List<Texture2D>();
 
         foreach (var url in urls) {
+            if (!url.StartsWith("https://")) {
+                textures.Add(FallbackTexture!);
+                Debug.LogError("Only https:// is supported");
+                continue;
+            }
+
             var www = UnityWebRequestTexture.GetTexture(url);
             yield return www.SendWebRequest();
 
