@@ -7,8 +7,10 @@ using static FunnyProjector.MyPluginInfo;
 namespace FunnyProjector;
 
 public class PluginConfig(ConfigFile config, string configDir) {
-    private readonly ConfigEntry<bool> _keepVanilla = config.Bind("Textures", "Keep vanilla", true);
-    private readonly ConfigEntry<bool> _acceptFromAll = config.Bind("Textures", "Accept from all", true);
+    private const string SECTION = "Textures";
+
+    private readonly ConfigEntry<bool> _keepVanilla = config.Bind(SECTION, "Keep vanilla", true);
+    private readonly ConfigEntry<bool> _acceptFromAll = config.Bind(SECTION, "Accept from all", true);
 
     public bool KeepVanilla => _keepVanilla.Value;
     public bool AcceptFromAll => _acceptFromAll.Value;
