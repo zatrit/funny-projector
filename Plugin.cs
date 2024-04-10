@@ -3,7 +3,6 @@ using static FunnyProjector.MyPluginInfo;
 using HarmonyLib;
 using FunnyProjector.RPCs;
 using UnityEngine;
-using System.Reflection;
 using System.IO;
 
 #pragma warning disable IDE0051 // Remove unused private members
@@ -19,6 +18,8 @@ public class Plugin : BaseUnityPlugin {
     public static Texture2D? FallbackTexture;
     public static new PluginConfig? Config;
     public static UrlsManager? Urls;
+
+    public static Texture2D[] Textures = [];
 
     void Awake() {
         Config = new(base.Config, Paths.ConfigPath);

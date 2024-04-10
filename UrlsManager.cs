@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FunnyProjector.RPCs;
-using Photon.Pun;
 using Steamworks;
 using UnityEngine.SceneManagement;
 using static MyceliumNetworking.MyceliumNetwork;
@@ -15,7 +14,11 @@ public class UrlsManager {
     private readonly UrlsRPC _rpc;
 
     public Action<IEnumerable<string>, bool>? OnResultUrls;
-    public IEnumerable<string> Urls => _suggestedUrls.Values.Aggregate((a, b) => a.Concat(b));
+    public IEnumerable<string> Urls => _suggestedUrls.Count switch {
+        0 => [],
+        1 => _suggestedUrls.Values.First(),
+        _ => _suggestedUrls.Values.Aggregate((a, b) => a.Concat(b)),
+    };
 
     static CSteamID CurrentUser => SteamUser.GetSteamID();
 
@@ -23,10 +26,9 @@ public class UrlsManager {
         (_rpc, _config) = (rpc, config);
 
         PlayerLeft += steamID => _suggestedUrls.Remove(steamID);
-        LobbyLeft += _suggestedUrls.Clear;
         LobbyEntered += () => {
             _suggestedUrls.Clear();
-            _rpc.SuggestUrls(_config.Urls, CurrentUser);
+            _rpc.SuggestUrls(_config.Urls);
         };
 
         rpc.OnSuggestUrls += (steamID, urls) => {
@@ -34,7 +36,6 @@ public class UrlsManager {
                 throw new Exception("Not a host");
             }
 
-            var steamLobby = SurfaceNetworkHandler.Instance.m_SteamLobby;
             if ((!_config.AcceptFromAll) && steamID != CurrentUser) {
                 return;
             }

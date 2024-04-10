@@ -2,10 +2,9 @@ using System.Collections.Generic;
 using MyceliumNetworking;
 using System;
 using System.Linq;
+using Steamworks;
 
 using static MyceliumNetworking.MyceliumNetwork;
-using Steamworks;
-using System.Security;
 
 namespace FunnyProjector.RPCs;
 
@@ -21,8 +20,8 @@ public class UrlsRPC(uint modId) {
     static string JoinUrls(IEnumerable<string> urls) => string.Join("\n", urls);
 
     [CustomRPC]
-    void AcceptSuggestUrls(ulong steamID, string data)
-        => OnSuggestUrls?.Invoke(new(steamID), SplitUrls(data));
+    void AcceptSuggestUrls(string data, RPCInfo info)
+        => OnSuggestUrls?.Invoke(info.SenderSteamID, SplitUrls(data));
 
     [CustomRPC]
     void AcceptResultUrls(string data, bool keepVanilla, RPCInfo info) {
@@ -33,10 +32,10 @@ public class UrlsRPC(uint modId) {
         OnResultUrls?.Invoke(SplitUrls(data), keepVanilla);
     }
 
-    public void SuggestUrls(IEnumerable<string> urls, CSteamID steamID)
+    public void SuggestUrls(IEnumerable<string> urls)
         => RPCTarget(
             modId, nameof(AcceptSuggestUrls), LobbyHost, ReliableType.Reliable,
-            steamID.m_SteamID, JoinUrls(urls)
+            JoinUrls(urls)
         );
 
     public void SendResultUrls(IEnumerable<string> urls, bool keepVanilla)
