@@ -1,1 +1,1 @@
-* Fixed some random errors
+* Improved automatic publishing
