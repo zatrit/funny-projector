@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BepInEx.Configuration;
 using FunnyProjector.RPCs;
 using Steamworks;
 using UnityEngine.SceneManagement;
@@ -46,8 +47,8 @@ public class UrlsManager {
         };
         rpc.OnResultUrls += (urls, keepVanilla) => OnResultUrls?.Invoke(urls, keepVanilla);
 
-        _config.KeepVanilla.SettingChanged += (_, _) => SendResultUrls();
-        _config.AllowedFrom.SettingChanged += (_, _) => SendResultUrls();
+        ResendOnConfigChange(_config.KeepVanilla);
+        ResendOnConfigChange(_config.AllowedFrom);
 
         /* Reset OnResultUrls each time scene changes to avoid
         setting textures for old greenscreens */
@@ -63,4 +64,7 @@ public class UrlsManager {
             Group.Everyone => true,
             _ => throw new NotImplementedException()
         };
+
+    private void ResendOnConfigChange<T>(ConfigEntry<T> entry)
+        => entry.SettingChanged += (_, _) => SendResultUrls();
 }
