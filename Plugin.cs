@@ -14,7 +14,7 @@ namespace FunnyProjector;
 public class Plugin : BaseUnityPlugin {
     private static readonly UrlsRPC _urlsRPC = new(PLUGIN_ID);
 
-    public const uint PLUGIN_ID = 971466466;
+    public const uint PLUGIN_ID = 1398770954;
 
     public static Texture2D? FallbackTexture;
     public static UrlsManager? Urls;
