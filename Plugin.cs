@@ -17,14 +17,13 @@ public class Plugin : BaseUnityPlugin {
     public const uint PLUGIN_ID = 971466466;
 
     public static Texture2D? FallbackTexture;
-    public static new PluginConfig? Config;
     public static UrlsManager? Urls;
 
     public static Texture[] Textures = [];
 
     void Awake() {
-        Config = new(base.Config, Paths.ConfigPath);
-        Urls = new(_urlsRPC, Config);
+        var config = new PluginConfig(Config, Paths.ConfigPath);
+        Urls = new(_urlsRPC, config);
 
         var assembly = GetType().Assembly;
         using var fallbackStream = assembly.GetManifestResourceStream("fallback.png");
