@@ -1,9 +1,10 @@
 ﻿using BepInEx;
-using static FunnyProjector.MyPluginInfo;
 using HarmonyLib;
 using FunnyProjector.RPCs;
 using UnityEngine;
 using System.IO;
+
+using static FunnyProjector.MyPluginInfo;
 
 #pragma warning disable IDE0051 // Remove unused private members
 
@@ -19,7 +20,7 @@ public class Plugin : BaseUnityPlugin {
     public static new PluginConfig? Config;
     public static UrlsManager? Urls;
 
-    public static Texture2D[] Textures = [];
+    public static Texture[] Textures = [];
 
     void Awake() {
         Config = new(base.Config, Paths.ConfigPath);
@@ -27,7 +28,7 @@ public class Plugin : BaseUnityPlugin {
 
         var assembly = GetType().Assembly;
         using var fallbackStream = assembly.GetManifestResourceStream("fallback.png");
-        using var memoryStream = new MemoryStream();
+        using var memoryStream = new MemoryStream(2048);
         fallbackStream.CopyTo(memoryStream);
 
         FallbackTexture = new Texture2D(800, 600);
