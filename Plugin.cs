@@ -14,7 +14,7 @@ namespace FunnyProjector;
 public class Plugin : BaseUnityPlugin {
     private static readonly UrlsRPC _urlsRPC = new(PLUGIN_ID);
 
-    public static readonly uint PLUGIN_ID = GetStableHashCode(PLUGIN_NAME);
+    public const uint PLUGIN_ID = 971466466;
 
     public static Texture2D? FallbackTexture;
     public static new PluginConfig? Config;
@@ -38,21 +38,4 @@ public class Plugin : BaseUnityPlugin {
     }
 
     void Start() => _urlsRPC.Register();
-
-    // https://stackoverflow.com/a/36845864/12245612
-    private static uint GetStableHashCode(string str) {
-        unchecked {
-            uint hash1 = 5381;
-            uint hash2 = hash1;
-
-            for (int i = 0; i < str.Length && str[i] != '\0'; i += 2) {
-                hash1 = ((hash1 << 5) + hash1) ^ str[i];
-                if (i == str.Length - 1 || str[i + 1] == '\0')
-                    break;
-                hash2 = ((hash2 << 5) + hash2) ^ str[i + 1];
-            }
-
-            return hash1 + (hash2 * 1566083941);
-        }
-    }
 }
