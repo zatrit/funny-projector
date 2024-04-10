@@ -9,4 +9,4 @@ Add image URLs (PNG or JPEG) to ``BepInEx/config/FunnyProjector.Backgrounds.txt`
 
 ## Available settings
 * ``Keep vanilla`` - keep vanilla projector background
-* ``Accept from all`` - when you host the game, the mod will use the URLs of all players in the lobby if ``true``, otherwise just yours
+* ``Allowed from`` - accepts ``Friends``, ``Host`` or ``Everyone``, determines who can suggest URLs
