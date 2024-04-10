@@ -36,9 +36,14 @@ public class UrlsManager {
                 throw new Exception("Not a host");
             }
 
-            if ((!_config.AcceptFromAll) && steamID != CurrentUser) {
-                return;
-            }
+            var allowed = _config.AllowedFrom.Value switch {
+                Group.Friends => SteamFriends.GetFriendRelationship(steamID) == EFriendRelationship.k_EFriendRelationshipFriend || steamID == CurrentUser,
+                Group.Host => steamID == CurrentUser,
+                Group.Everyone => true,
+                _ => throw new NotImplementedException()
+            };
+
+            if (!allowed) return;
 
             _suggestedUrls.Add(steamID, urls);
             SendResultUrls();
@@ -50,5 +55,5 @@ public class UrlsManager {
         SceneManager.activeSceneChanged += (_, _) => OnResultUrls = null;
     }
 
-    public void SendResultUrls() => _rpc.SendResultUrls(Urls, _config.KeepVanilla);
+    public void SendResultUrls() => _rpc.SendResultUrls(Urls, _config.KeepVanilla.Value);
 }

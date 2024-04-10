@@ -13,8 +13,6 @@ namespace FunnyProjector.Patches;
 [HarmonyPatch(typeof(ProjectorMachine), "Start")]
 public class LogImages {
     static void Postfix(ProjectorMachine __instance) {
-        Debug.LogError("Creating projector machine");
-
         Urls!.OnResultUrls += (urls, keepVanilla) => ApplyUrls(__instance, urls, keepVanilla);
 
         if (MyceliumNetwork.IsHost) {

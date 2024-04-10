@@ -7,14 +7,18 @@ using static FunnyProjector.MyPluginInfo;
 
 namespace FunnyProjector;
 
+public enum Group {
+    Host,
+    Friends,
+    Everyone,
+}
+
 public class PluginConfig(ConfigFile config, string configDir) {
     private const string SECTION = "Textures";
 
-    private readonly ConfigEntry<bool> _keepVanilla = config.Bind(SECTION, "Keep vanilla", true);
-    private readonly ConfigEntry<bool> _acceptFromAll = config.Bind(SECTION, "Accept from all", true);
+    public readonly ConfigEntry<bool> KeepVanilla = config.Bind(SECTION, "Keep vanilla", true);
+    public readonly ConfigEntry<Group> AllowedFrom = config.Bind(SECTION, "Allowed from", Group.Friends);
 
-    public bool KeepVanilla => _keepVanilla.Value;
-    public bool AcceptFromAll => _acceptFromAll.Value;
     public IEnumerable<string> Urls {
         get {
             var path = Path.Join(configDir, $"{PLUGIN_NAME}.Backgrounds.txt");
